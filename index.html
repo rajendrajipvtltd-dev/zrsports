@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZRSPORTS - Live Cricket Scores | All World Matches</title>
-    <meta name="description" content="ZRSPORTS - Your ultimate destination for live cricket scores, covering all leagues and matches worldwide. Stay updated with real-time cricket action.">
     <style>
         :root {
             --bg-primary: #0a0e14;
@@ -24,33 +23,14 @@
             --blue-accent: #2196f3;
             --whatsapp: #25d366;
             --whatsapp-dark: #128c7e;
-            --gradient-dark: linear-gradient(135deg, #0a0e14 0%, #111720 50%, #0d1117 100%);
-            --gradient-accent: linear-gradient(135deg, #00c853 0%, #00e676 100%);
-            --gradient-gold: linear-gradient(135deg, #ff8f00 0%, #ffab00 100%);
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
-            --shadow-glow: 0 0 20px rgba(0, 200, 83, 0.25);
-            --shadow-gold: 0 0 20px rgba(255, 171, 0, 0.3);
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
             --radius-xl: 20px;
             --font-main: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
-            --transition-fast: 0.15s ease;
-            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: var(--font-main);
             background: var(--bg-primary);
@@ -58,30 +38,11 @@
             min-height: 100vh;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background-image:
-                radial-gradient(ellipse at 20% 0%, rgba(0, 200, 83, 0.04) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 100%, rgba(255, 171, 0, 0.04) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 50%, rgba(33, 150, 243, 0.02) 0%, transparent 70%);
-            background-attachment: fixed;
         }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
 
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-light);
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
-        }
-
-        /* ============ TOP BAR ============ */
         .top-bar {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border);
@@ -90,8 +51,7 @@
             top: 0;
             z-index: 1000;
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
         .top-bar-inner {
             max-width: 1300px;
@@ -100,601 +60,282 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-        }
+        .logo-section { display: flex; align-items: center; gap: 10px; }
         .logo-icon {
-            width: 42px;
-            height: 42px;
+            width: 42px; height: 42px;
             border-radius: var(--radius-sm);
-            background: var(--gradient-accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            font-weight: 900;
-            color: #000;
-            box-shadow: var(--shadow-glow);
-            animation: logoPulse 3s ease-in-out infinite;
-            letter-spacing: -1px;
+            background: linear-gradient(135deg, #00c853, #00e676);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; font-weight: 900; color: #000;
+            box-shadow: 0 0 16px rgba(0,200,83,0.3);
         }
-        @keyframes logoPulse {
-            0%,
-            100% {
-                box-shadow: 0 0 16px rgba(0, 200, 83, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 30px rgba(0, 200, 83, 0.55);
-            }
-        }
-        .logo-text {
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            color: #fff;
-            white-space: nowrap;
-        }
-        .logo-text .zr {
-            color: var(--accent-glow);
-        }
-        .logo-text .sports {
-            color: var(--gold-light);
-        }
+        .logo-text { font-size: 1.4rem; font-weight: 800; color: #fff; }
+        .logo-text .zr { color: var(--accent-glow); }
+        .logo-text .sports { color: var(--gold-light); }
 
-        /* Live indicator */
         .live-indicator {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255, 61, 61, 0.12);
-            border: 1px solid rgba(255, 61, 61, 0.3);
-            border-radius: 20px;
-            padding: 5px 12px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #ff6b6b;
-            animation: liveBlink 2s ease-in-out infinite;
-            white-space: nowrap;
-            letter-spacing: 0.5px;
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,61,61,0.12);
+            border: 1px solid rgba(255,61,61,0.3);
+            border-radius: 20px; padding: 5px 12px;
+            font-size: 0.75rem; font-weight: 700; color: #ff6b6b;
         }
         .live-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #ff3d3d;
-            box-shadow: 0 0 10px #ff3d3d;
-            animation: dotPulse 1s ease-in-out infinite;
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #ff3d3d; box-shadow: 0 0 10px #ff3d3d;
+            animation: dotPulse 1s infinite;
         }
         @keyframes dotPulse {
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.4;
-                transform: scale(1.6);
-            }
-        }
-        @keyframes liveBlink {
-            0%,
-            100% {
-                border-color: rgba(255, 61, 61, 0.3);
-            }
-            50% {
-                border-color: rgba(255, 61, 61, 0.7);
-            }
+            0%,100%{opacity:1;transform:scale(1);}
+            50%{opacity:0.4;transform:scale(1.6);}
         }
 
-        /* WhatsApp Button - Top */
         .whatsapp-btn-top {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--whatsapp);
-            color: #fff;
-            text-decoration: none;
-            padding: 9px 16px;
-            border-radius: 25px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            transition: all var(--transition-smooth);
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
-            letter-spacing: 0.3px;
-            flex-shrink: 0;
+            display: flex; align-items: center; gap: 8px;
+            background: var(--whatsapp); color: #fff; text-decoration: none;
+            padding: 9px 16px; border-radius: 25px;
+            font-weight: 700; font-size: 0.85rem; white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(37,211,102,0.35);
+            transition: all 0.3s ease;
         }
-        .whatsapp-btn-top:hover {
-            background: #1ebe57;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 22px rgba(37, 211, 102, 0.5);
-        }
-        .whatsapp-btn-top svg {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
+        .whatsapp-btn-top:hover { background: #1ebe57; transform: translateY(-2px); }
+        .whatsapp-btn-top svg { width: 20px; height: 20px; }
 
-        /* ============ MAIN CONTAINER ============ */
-        .main-container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        .main-container { max-width: 1300px; margin: 0 auto; padding: 20px; }
+        .hero-section { text-align: center; padding: 20px 0 10px; }
+        .hero-section h2 { font-size: 1rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
+        .hero-section .highlight { color: var(--accent-glow); font-weight: 700; }
 
-        /* ============ HERO SECTION ============ */
-        .hero-section {
-            text-align: center;
-            padding: 20px 0 10px;
-        }
-        .hero-section h2 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        .hero-section .highlight {
-            color: var(--accent-glow);
-            font-weight: 700;
-        }
-
-        /* ============ LEAGUE TABS ============ */
         .league-tabs-wrapper {
-            position: sticky;
-            top: 58px;
-            z-index: 999;
-            background: var(--bg-primary);
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 16px;
+            position: sticky; top: 58px; z-index: 999;
+            background: var(--bg-primary); padding: 10px 0;
+            border-bottom: 1px solid var(--border); margin-bottom: 16px;
         }
         .league-tabs {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
+            max-width: 1300px; margin: 0 auto; padding: 0 20px;
+            display: flex; gap: 8px; overflow-x: auto;
             scrollbar-width: none;
-            -ms-overflow-style: none;
-            flex-wrap: nowrap;
         }
-        .league-tabs::-webkit-scrollbar {
-            display: none;
-        }
+        .league-tabs::-webkit-scrollbar { display: none; }
         .league-tab {
-            padding: 9px 18px;
-            border-radius: 25px;
+            padding: 9px 18px; border-radius: 25px;
             border: 1.5px solid var(--border-light);
-            background: var(--bg-card);
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 0.82rem;
-            font-weight: 600;
-            white-space: nowrap;
-            transition: all var(--transition-smooth);
-            letter-spacing: 0.3px;
-            user-select: none;
+            background: var(--bg-card); color: var(--text-secondary);
+            cursor: pointer; font-size: 0.82rem; font-weight: 600;
+            white-space: nowrap; transition: all 0.3s ease;
         }
-        .league-tab:hover {
-            border-color: var(--accent);
-            color: #fff;
-            background: var(--bg-card-hover);
-        }
-        .league-tab.active {
-            background: var(--gradient-accent);
-            color: #000;
-            border-color: transparent;
-            font-weight: 700;
-            box-shadow: var(--shadow-glow);
-        }
-        .league-tab .tab-icon {
-            margin-right: 4px;
-        }
+        .league-tab.active { background: linear-gradient(135deg, #00c853, #00e676); color: #000; border-color: transparent; font-weight: 700; }
+        .league-tab:hover { border-color: var(--accent); color: #fff; background: var(--bg-card-hover); }
 
-        /* ============ MATCHES GRID ============ */
-        .matches-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 16px;
-        }
-        @media (max-width: 850px) {
-            .matches-grid {
-                grid-template-columns: 1fr;
-            }
-            .top-bar-inner {
-                flex-wrap: wrap;
-                gap: 8px;
-                justify-content: center;
-            }
-            .logo-text {
-                font-size: 1.1rem;
-            }
-            .whatsapp-btn-top {
-                padding: 7px 12px;
-                font-size: 0.75rem;
-            }
-        }
+        .matches-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; }
+        @media (max-width: 850px) { .matches-grid { grid-template-columns: 1fr; } }
 
-        /* ============ MATCH CARD ============ */
         .match-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            transition: all var(--transition-smooth);
-            box-shadow: var(--shadow-sm);
-            position: relative;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); overflow: hidden;
+            transition: all 0.3s ease; position: relative;
         }
-        .match-card:hover {
-            border-color: var(--border-light);
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-            background: var(--bg-card-hover);
-        }
-        .match-card.live-match {
-            border-left: 3px solid var(--red);
-        }
-        .match-card.upcoming-match {
-            border-left: 3px solid var(--blue-accent);
-        }
-        .match-card.completed-match {
-            border-left: 3px solid var(--accent);
-        }
+        .match-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
         .match-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 16px;
-            background: rgba(0, 0, 0, 0.25);
-            border-bottom: 1px solid var(--border);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: var(--text-muted);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 16px; background: rgba(0,0,0,0.25);
+            border-bottom: 1px solid var(--border); font-size: 0.75rem;
+            font-weight: 600; text-transform: uppercase; color: var(--text-muted);
         }
-        .match-status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .match-league { color: var(--gold); font-weight: 700; }
         .status-badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 700;
         }
-        .status-badge.live {
-            background: rgba(255, 61, 61, 0.18);
-            color: #ff5252;
-            animation: liveBlink 2s ease-in-out infinite;
-        }
-        .status-badge.upcoming {
-            background: rgba(33, 150, 243, 0.18);
-            color: #64b5f6;
-        }
-        .status-badge.completed {
-            background: rgba(0, 200, 83, 0.18);
-            color: #69f0ae;
-        }
-        .match-league {
-            color: var(--gold);
-            font-weight: 700;
-        }
-        .match-body {
-            padding: 16px;
-        }
+        .status-badge.live { background: rgba(255,61,61,0.18); color: #ff5252; }
+        .status-badge.upcoming { background: rgba(33,150,243,0.18); color: #64b5f6; }
+        .status-badge.completed { background: rgba(0,200,83,0.18); color: #69f0ae; }
+        .match-body { padding: 16px; }
         .team-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.03);
         }
-        .team-row:last-child {
-            border-bottom: none;
-        }
-        .team-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .team-info { display: flex; align-items: center; gap: 10px; }
         .team-flag {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            font-weight: 700;
-            flex-shrink: 0;
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; font-weight: 700; color: #fff;
         }
-        .team-flag.team-a {
-            background: linear-gradient(135deg, #1a237e, #283593);
-            color: #fff;
-        }
-        .team-flag.team-b {
-            background: linear-gradient(135deg, #b71c1c, #c62828);
-            color: #fff;
-        }
-        .team-flag.team-c {
-            background: linear-gradient(135deg, #004d40, #00695c);
-            color: #fff;
-        }
-        .team-flag.team-d {
-            background: linear-gradient(135deg, #e65100, #ef6c00);
-            color: #fff;
-        }
-        .team-flag.team-e {
-            background: linear-gradient(135deg, #4a148c, #6a1b9a);
-            color: #fff;
-        }
-        .team-flag.team-f {
-            background: linear-gradient(135deg, #01579b, #0277bd);
-            color: #fff;
-        }
-        .team-name {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #fff;
-        }
-        .team-score {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #fff;
-            text-align: right;
-        }
-        .team-score .overs {
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            display: block;
-        }
-        .match-divider {
-            text-align: center;
-            padding: 4px 0;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
+        .team-name { font-weight: 700; font-size: 0.95rem; color: #fff; }
+        .team-score { font-weight: 700; font-size: 1.1rem; color: #fff; text-align: right; }
+        .team-score .overs { font-size: 0.7rem; font-weight: 500; color: var(--text-muted); display: block; }
+        .match-divider { text-align: center; padding: 4px 0; font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
         .match-footer {
-            padding: 10px 16px;
-            background: rgba(0, 0, 0, 0.2);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            padding: 10px 16px; background: rgba(0,0,0,0.2);
+            border-top: 1px solid var(--border); display: flex;
+            justify-content: space-between; align-items: center;
+            font-size: 0.75rem; color: var(--text-muted);
         }
-        .match-venue {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .match-time {
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-        .score-highlight {
-            color: var(--accent-glow);
-            font-weight: 800;
-        }
-        .batting-indicator {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent-glow);
-            margin-right: 4px;
-            animation: dotPulse 1.5s ease-in-out infinite;
-        }
-
-        /* ============ NO MATCHES ============ */
-        .no-matches {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-muted);
-        }
-        .no-matches .icon {
-            font-size: 4rem;
-            margin-bottom: 16px;
-        }
-        .no-matches h3 {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-        }
-
-        /* ============ FLOATING WHATSAPP ============ */
+        .no-matches { text-align: center; padding: 60px 20px; color: var(--text-muted); }
         .floating-whatsapp {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            z-index: 9999;
-            width: 58px;
-            height: 58px;
-            background: var(--whatsapp);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 28px rgba(37, 211, 102, 0.45);
-            cursor: pointer;
-            transition: all var(--transition-smooth);
-            text-decoration: none;
+            position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+            width: 58px; height: 58px; background: var(--whatsapp);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 28px rgba(37,211,102,0.45);
+            cursor: pointer; transition: all 0.3s ease;
         }
-        .floating-whatsapp:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 36px rgba(37, 211, 102, 0.6);
-        }
-        .floating-whatsapp svg {
-            width: 30px;
-            height: 30px;
-            fill: #fff;
-        }
+        .floating-whatsapp:hover { transform: scale(1.1); }
+        .floating-whatsapp svg { width: 30px; height: 30px; fill: #fff; }
         .floating-whatsapp .pulse-ring {
-            position: absolute;
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            border: 2px solid rgba(37, 211, 102, 0.6);
+            position: absolute; width: 58px; height: 58px; border-radius: 50%;
+            border: 2px solid rgba(37,211,102,0.6);
             animation: ringPulse 2s ease-out infinite;
         }
-        @keyframes ringPulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.8;
-            }
-            100% {
-                transform: scale(2);
-                opacity: 0;
-            }
-        }
-
-        /* ============ FOOTER ============ */
-        .site-footer {
-            text-align: center;
-            padding: 24px;
-            color: var(--text-muted);
-            font-size: 0.78rem;
-            border-top: 1px solid var(--border);
-            margin-top: 32px;
-            letter-spacing: 0.3px;
-        }
-        .site-footer strong {
-            color: var(--accent-glow);
-        }
-
-        /* ============ LOADING SHIMMER ============ */
-        @keyframes shimmer {
-            0% {
-                background-position: -400px 0;
-            }
-            100% {
-                background-position: 400px 0;
-            }
-        }
-        .shimmer {
-            animation: shimmer 1.8s infinite;
-            background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card-hover) 50%, var(--bg-card) 75%);
-            background-size: 800px 100%;
-        }
-
-        /* ============ RESPONSIVE ============ */
-        @media (max-width: 600px) {
-            .matches-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            .match-card {
-                border-radius: var(--radius-md);
-            }
-            .team-name {
-                font-size: 0.85rem;
-            }
-            .team-score {
-                font-size: 0.95rem;
-            }
-            .league-tab {
-                padding: 7px 13px;
-                font-size: 0.72rem;
-            }
-            .floating-whatsapp {
-                width: 48px;
-                height: 48px;
-                bottom: 18px;
-                right: 18px;
-            }
-            .floating-whatsapp svg {
-                width: 24px;
-                height: 24px;
-            }
-            .whatsapp-btn-top {
-                padding: 6px 10px;
-                font-size: 0.7rem;
-                gap: 4px;
-            }
-            .whatsapp-btn-top svg {
-                width: 16px;
-                height: 16px;
-            }
-            .logo-icon {
-                width: 32px;
-                height: 32px;
-                font-size: 16px;
-            }
-            .logo-text {
-                font-size: 1rem;
-            }
-        }
+        @keyframes ringPulse { 0%{transform:scale(1);opacity:0.8;} 100%{transform:scale(2);opacity:0;} }
+        .site-footer { text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.78rem; border-top: 1px solid var(--border); margin-top: 32px; }
+        .score-highlight { color: var(--accent-glow); font-weight: 800; }
     </style>
 </head>
 <body>
-
-    <!-- ==================== TOP BAR ==================== -->
     <header class="top-bar">
         <div class="top-bar-inner">
             <div class="logo-section">
                 <div class="logo-icon">ZR</div>
                 <span class="logo-text"><span class="zr">ZR</span><span class="sports">SPORTS</span></span>
             </div>
-            <div class="live-indicator">
-                <span class="live-dot"></span> LIVE SCORES
-            </div>
-            <a href="https://wa.me/919039543905?text=Hi%20ZRSPORTS%20-%20I%20need%20cricket%20updates!" target="_blank" rel="noopener noreferrer" class="whatsapp-btn-top" title="Chat on WhatsApp">
+            <div class="live-indicator"><span class="live-dot"></span> LIVE SCORES</div>
+            <a href="https://wa.me/919039543905?text=Hi%20ZRSPORTS%20-%20I%20need%20cricket%20updates!" target="_blank" class="whatsapp-btn-top">
                 <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
                 Chat on WhatsApp
             </a>
         </div>
     </header>
 
-    <!-- ==================== LEAGUE TABS ==================== -->
-    <div class="league-tabs-wrapper" id="leagueTabsWrapper">
+    <div class="league-tabs-wrapper">
         <div class="league-tabs" id="leagueTabs">
-            <button class="league-tab active" data-league="all"><span class="tab-icon">🌍</span> All Matches</button>
-            <button class="league-tab" data-league="international"><span class="tab-icon">🏆</span> International</button>
-            <button class="league-tab" data-league="ipl"><span class="tab-icon">💎</span> IPL</button>
-            <button class="league-tab" data-league="bbl"><span class="tab-icon">🔥</span> BBL</button>
-            <button class="league-tab" data-league="psl"><span class="tab-icon">⭐</span> PSL</button>
-            <button class="league-tab" data-league="cpl"><span class="tab-icon">🌴</span> CPL</button>
-            <button class="league-tab" data-league="t20wc"><span class="tab-icon">👑</span> T20 World Cup</button>
-            <button class="league-tab" data-league="ashes"><span class="tab-icon">🏴</span> The Ashes</button>
-            <button class="league-tab" data-league="sa20"><span class="tab-icon">🇿🇦</span> SA20</button>
-            <button class="league-tab" data-league="lpl"><span class="tab-icon">🇱🇰</span> LPL</button>
-            <button class="league-tab" data-league="bpl"><span class="tab-icon">🇧🇩</span> BPL</button>
+            <button class="league-tab active" data-league="all">🌍 All Matches</button>
+            <button class="league-tab" data-league="international">🏆 International</button>
+            <button class="league-tab" data-league="ipl">💎 IPL</button>
+            <button class="league-tab" data-league="bbl">🔥 BBL</button>
+            <button class="league-tab" data-league="psl">⭐ PSL</button>
+            <button class="league-tab" data-league="cpl">🌴 CPL</button>
+            <button class="league-tab" data-league="t20wc">👑 T20 World Cup</button>
+            <button class="league-tab" data-league="ashes">🏴 The Ashes</button>
+            <button class="league-tab" data-league="sa20">🇿🇦 SA20</button>
+            <button class="league-tab" data-league="lpl">🇱🇰 LPL</button>
+            <button class="league-tab" data-league="bpl">🇧🇩 BPL</button>
         </div>
     </div>
 
-    <!-- ==================== MAIN CONTENT ==================== -->
     <main class="main-container">
         <div class="hero-section">
             <h2>🏏 <span class="highlight">Live Cricket</span> — All World Leagues — <span class="highlight">Real-Time Updates</span></h2>
         </div>
-        <div class="matches-grid" id="matchesGrid">
-            <!-- Dynamic match cards will be rendered here -->
-        </div>
+        <div class="matches-grid" id="matchesGrid"></div>
         <div class="no-matches" id="noMatches" style="display:none;">
             <div class="icon">🏟️</div>
             <h3>No matches found for this league</h3>
-            <p style="color:var(--text-muted);">Check back soon for upcoming fixtures!</p>
         </div>
     </main>
 
-    <!-- ==================== FOOTER ==================== -->
     <footer class="site-footer">
         <p>© 2026 <strong>ZRSPORTS</strong> — All Rights Reserved. | Live Cricket Scores & Updates Worldwide.</p>
-        <p style="font-size:0.7rem;color:var(--text-muted);">Covering all international & domestic leagues. Stay tuned for real-time action.</p>
     </footer>
 
-    <!-- ==================== FLOATING WHATSAPP BUTTON ==================== -->
-    <a href="https
+    <a href="https://wa.me/919039543905?text=Hi%20ZRSPORTS%20-%20I%20need%20cricket%20updates!" target="_blank" class="floating-whatsapp" title="Chat on WhatsApp">
+        <div class="pulse-ring"></div>
+        <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+    </a>
+
+    <script>
+        (function() {
+            // 🏏 ZRSPORTS LIVE MATCH DATA (Sample for today – 8 May 2026)
+            const allMatches = [
+                { id:1, league:'international', leagueName:'ICC World Test Championship', teamA:'India', teamB:'Australia', scoreA:'328/4', oversA:'89.2 ov', scoreB:'', oversB:'', status:'live', venue:'Sydney Cricket Ground', time:'Day 2 - Session 1' },
+                { id:2, league:'ipl', leagueName:'Indian Premier League', teamA:'Mumbai Indians', teamB:'Chennai Super Kings', scoreA:'186/5', oversA:'20 ov', scoreB:'142/8', oversB:'17.3 ov', status:'live', venue:'Wankhede Stadium, Mumbai', time:'CSK need 45 off 15' },
+                { id:3, league:'bbl', leagueName:'Big Bash League', teamA:'Perth Scorchers', teamB:'Sydney Sixers', scoreA:'', oversA:'', scoreB:'', oversB:'', status:'upcoming', venue:'Optus Stadium, Perth', time:'Starts in 2h 15m' },
+                { id:4, league:'psl', leagueName:'Pakistan Super League', teamA:'Lahore Qalandars', teamB:'Karachi Kings', scoreA:'210/4', oversA:'20 ov', scoreB:'211/3', oversB:'19.1 ov', status:'completed', venue:'Gaddafi Stadium, Lahore', time:'KK won by 7 wickets' },
+                { id:5, league:'cpl', leagueName:'Caribbean Premier League', teamA:'Trinbago Knight Riders', teamB:'Guyana Amazon Warriors', scoreA:'158/9', oversA:'20 ov', scoreB:'104/2', oversB:'12.4 ov', status:'live', venue:'Queen\'s Park Oval, Trinidad', time:'GAW need 55 off 44' },
+                { id:6, league:'t20wc', leagueName:'T20 World Cup 2026', teamA:'England', teamB:'Pakistan', scoreA:'', oversA:'', scoreB:'', oversB:'', status:'upcoming', venue:'Melbourne Cricket Ground', time:'Tomorrow 7:00 PM IST' },
+                { id:7, league:'ashes', leagueName:'The Ashes 2026', teamA:'England', teamB:'Australia', scoreA:'215 & 178', oversA:'', scoreB:'302 & 92/4', oversB:'', status:'live', venue:'Lord\'s, London', time:'AUS need 0 to win' },
+                { id:8, league:'sa20', leagueName:'SA20 League', teamA:'Sunrisers Eastern Cape', teamB:'Pretoria Capitals', scoreA:'172/6', oversA:'20 ov', scoreB:'173/4', oversB:'18.5 ov', status:'completed', venue:'St George\'s Park, Gqeberha', time:'PC won by 6 wickets' },
+                { id:9, league:'lpl', leagueName:'Lanka Premier League', teamA:'Jaffna Kings', teamB:'Colombo Strikers', scoreA:'', oversA:'', scoreB:'', oversB:'', status:'upcoming', venue:'R.Premadasa Stadium, Colombo', time:'Starts at 3:30 PM' },
+                { id:10, league:'bpl', leagueName:'Bangladesh Premier League', teamA:'Comilla Victorians', teamB:'Rangpur Riders', scoreA:'141/7', oversA:'20 ov', scoreB:'97/3', oversB:'11.2 ov', status:'live', venue:'Sher-e-Bangla Stadium, Dhaka', time:'RAR need 45 off 52' },
+                { id:11, league:'international', leagueName:'India vs South Africa ODI', teamA:'India', teamB:'South Africa', scoreA:'', oversA:'', scoreB:'', oversB:'', status:'upcoming', venue:'Newlands, Cape Town', time:'May 10, 1:30 PM' },
+                { id:12, league:'ipl', leagueName:'IPL Eliminator', teamA:'Rajasthan Royals', teamB:'Lucknow Super Giants', scoreA:'', oversA:'', scoreB:'', oversB:'', status:'upcoming', venue:'Eden Gardens, Kolkata', time:'Tomorrow 7:30 PM' }
+            ];
+
+            function getFlagClass(name) {
+                const map = {
+                    'India':'team-a','Australia':'team-b','England':'team-c','Pakistan':'team-d','South Africa':'team-e',
+                    'Mumbai Indians':'team-a','Chennai Super Kings':'team-b','Perth Scorchers':'team-c','Sydney Sixers':'team-d',
+                    'Lahore Qalandars':'team-a','Karachi Kings':'team-b','Trinbago Knight Riders':'team-c','Guyana Amazon Warriors':'team-d',
+                    'Sunrisers Eastern Cape':'team-a','Pretoria Capitals':'team-b','Jaffna Kings':'team-c','Colombo Strikers':'team-d',
+                    'Comilla Victorians':'team-a','Rangpur Riders':'team-b','Rajasthan Royals':'team-c','Lucknow Super Giants':'team-d'
+                };
+                return map[name] || 'team-f';
+            }
+
+            function renderMatches(league) {
+                const grid = document.getElementById('matchesGrid');
+                const noMatches = document.getElementById('noMatches');
+                let filtered = league === 'all' ? allMatches : allMatches.filter(m => m.league === league);
+                if (filtered.length === 0) {
+                    grid.innerHTML = '';
+                    noMatches.style.display = 'block';
+                    return;
+                }
+                noMatches.style.display = 'none';
+                let html = '';
+                filtered.forEach(m => {
+                    let statusClass = m.status === 'live' ? 'live' : (m.status === 'upcoming' ? 'upcoming' : 'completed');
+                    let statusText = m.status.toUpperCase();
+                    let cardStatusClass = m.status === 'live' ? 'live-match' : (m.status === 'upcoming' ? 'upcoming-match' : 'completed-match');
+                    let teamAScoreHtml = m.scoreA ? `<span class="score-highlight">${m.scoreA}</span> <span class="overs">${m.oversA}</span>` : '<span style="color:#aaa;">Yet to bat</span>';
+                    let teamBScoreHtml = m.scoreB ? `<span class="score-highlight">${m.scoreB}</span> <span class="overs">${m.oversB}</span>` : '<span style="color:#aaa;">Yet to bat</span>';
+                    html += `
+                    <div class="match-card ${cardStatusClass}">
+                        <div class="match-card-header">
+                            <span class="match-league">${m.leagueName}</span>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="match-body">
+                            <div class="team-row">
+                                <div class="team-info">
+                                    <div class="team-flag ${getFlagClass(m.teamA)}">${m.teamA.charAt(0)}</div>
+                                    <span class="team-name">${m.teamA}</span>
+                                </div>
+                                <div class="team-score">${teamAScoreHtml}</div>
+                            </div>
+                            <div class="match-divider">VS</div>
+                            <div class="team-row">
+                                <div class="team-info">
+                                    <div class="team-flag ${getFlagClass(m.teamB)}">${m.teamB.charAt(0)}</div>
+                                    <span class="team-name">${m.teamB}</span>
+                                </div>
+                                <div class="team-score">${teamBScoreHtml}</div>
+                            </div>
+                        </div>
+                        <div class="match-footer">
+                            <span class="match-venue">📍 ${m.venue}</span>
+                            <span class="match-time">⏱ ${m.time}</span>
+                        </div>
+                    </div>`;
+                });
+                grid.innerHTML = html;
+            }
+
+            // Tab switching
+            const tabs = document.querySelectorAll('.league-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    const league = this.getAttribute('data-league');
+                    renderMatches(league);
+                });
+            });
+
+            // Initial render
+            renderMatches('all');
+        })();
+    </script>
+</body>
+</html>
