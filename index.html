@@ -4,12 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZRSPORTS - Live Cricket Scores | Real-Time API</title>
+    
+    <!-- ✅ Google Ads Conversion Tag (gtag.js) – लगा दिया गया है -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18104727921"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-18104727921');
+    </script>
+
     <style>
         :root {
-            --bg-primary: #0a0e14;
-            --bg-secondary: #111720;
-            --bg-card: #161c26;
-            --bg-card-hover: #1b2330;
+            /* 🎨 नया बैकग्राउंड – स्लीक डार्क ग्रेडिएंट (काला नहीं) */
+            --bg-primary: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --bg-secondary: #111827cc;  /* slight transparent */
+            --bg-card: rgba(30, 41, 59, 0.85);
+            --bg-card-hover: rgba(51, 65, 85, 0.9);
             --accent: #00c853;
             --accent-glow: #00e676;
             --gold: #ffab00;
@@ -17,8 +28,8 @@
             --text-primary: #e8eaed;
             --text-secondary: #b0b5bd;
             --text-muted: #6b7280;
-            --border: #1e293b;
-            --border-light: #263040;
+            --border: #334155;
+            --border-light: #475569;
             --red: #ff3d3d;
             --blue-accent: #2196f3;
             --whatsapp: #25d366;
@@ -40,17 +51,17 @@
             -webkit-font-smoothing: antialiased;
         }
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-primary); }
-        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
 
         .top-bar {
-            background: var(--bg-secondary);
+            background: rgba(17, 24, 39, 0.9);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             padding: 6px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            backdrop-filter: blur(20px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
         .top-bar-inner {
@@ -111,7 +122,9 @@
 
         .league-tabs-wrapper {
             position: sticky; top: 58px; z-index: 999;
-            background: var(--bg-primary); padding: 10px 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 10px 0;
             border-bottom: 1px solid var(--border); margin-bottom: 16px;
         }
         .league-tabs {
@@ -123,7 +136,7 @@
         .league-tab {
             padding: 9px 18px; border-radius: 25px;
             border: 1.5px solid var(--border-light);
-            background: var(--bg-card); color: var(--text-secondary);
+            background: rgba(30, 41, 59, 0.7); color: var(--text-secondary);
             cursor: pointer; font-size: 0.82rem; font-weight: 600;
             white-space: nowrap; transition: all 0.3s ease;
         }
@@ -134,11 +147,13 @@
         @media (max-width: 850px) { .matches-grid { grid-template-columns: 1fr; } }
 
         .match-card {
-            background: var(--bg-card); border: 1px solid var(--border);
+            background: var(--bg-card);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border);
             border-radius: var(--radius-lg); overflow: hidden;
             transition: all 0.3s ease; position: relative;
         }
-        .match-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+        .match-card:hover { border-color: var(--accent); transform: translateY(-2px); background: var(--bg-card-hover); }
         .match-card-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 10px 16px; background: rgba(0,0,0,0.25);
@@ -246,11 +261,9 @@
 
     <script>
         (function() {
-            // 🗝️ आपकी दी हुई API KEY
             const API_KEY = '8e37d7c2-4b7d-450e-ba82-28fd7f461d4d';
             const API_URL = `https://api.cricapi.com/v1/currentMatches?apikey=${API_KEY}&offset=0`;
 
-            // फ़ॉलबैक डेटा (अगर API काम न करे)
             const fallbackMatches = [
                 { id:1, league:'ipl', leagueName:'IPL Match 51', teamA:'Delhi Capitals', teamB:'Kolkata Knight Riders', scoreA:'', oversA:'', scoreB:'', oversB:'', status:'upcoming', venue:'Arun Jaitley Stadium, Delhi', time:'Today 7:30 PM IST' },
                 { id:2, league:'ipl', leagueName:'IPL Match 50 (RESULT)', teamA:'Lucknow Super Giants', teamB:'Royal Challengers Bengaluru', scoreA:'209/3', oversA:'20 ov', scoreB:'203/6', oversB:'19 ov', status:'completed', venue:'Ekana Stadium, Lucknow', time:'LSG won by 9 runs' },
@@ -306,11 +319,9 @@
                 grid.innerHTML = html;
             }
 
-            // CricAPI से डेटा पार्स करना
             function parseApiData(apiResponse) {
                 if (!apiResponse || !apiResponse.data || !Array.isArray(apiResponse.data)) return null;
                 return apiResponse.data.map(match => {
-                    // टीमों के नाम निकालना
                     let teamA = match.teams ? match.teams[0] : 'Team A';
                     let teamB = match.teams ? match.teams[1] : 'Team B';
                     let scoreA = '', oversA = '', scoreB = '', oversB = '';
@@ -358,20 +369,15 @@
                 }
             }
 
-            // टैब स्विचिंग (अभी API डेटा सारे मैच देता है, इसलिए लीग फ़िल्टर नहीं करेंगे - या बाद में जोड़ सकते हैं)
             document.getElementById('leagueTabs').addEventListener('click', function(e) {
                 if (e.target.classList.contains('league-tab')) {
                     document.querySelectorAll('.league-tab').forEach(b => b.classList.remove('active'));
                     e.target.classList.add('active');
-                    // अभी सभी मैच दिखाते हैं (API डेटा में टैब फ़िल्टर बाद में लगाएँ)
-                    loadScores(); // रिफ्रेश
+                    loadScores();
                 }
             });
 
-            // शुरुआती लोड
             loadScores();
-
-            // हर 30 सेकंड में ऑटो-रिफ्रेश
             setInterval(loadScores, 30000);
         })();
     </script>
