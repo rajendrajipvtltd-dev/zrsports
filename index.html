@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZRSPORTS - Live Cricket Scores | Real-Time API</title>
     
-    <!-- ✅ Google Ads Conversion Tag (gtag.js) – लगा दिया गया है -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18104727921"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -14,11 +13,25 @@
       gtag('config', 'AW-18104727921');
     </script>
 
+    <script>
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.open(url, '_blank');
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-18104727921/whatsapp_click', // Yahan click track hoga
+          'event_callback': callback
+      });
+      return false;
+    }
+    </script>
+
     <style>
         :root {
-            /* 🎨 नया बैकग्राउंड – स्लीक डार्क ग्रेडिएंट (काला नहीं) */
             --bg-primary: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --bg-secondary: #111827cc;  /* slight transparent */
+            --bg-secondary: #111827cc;
             --bg-card: rgba(30, 41, 59, 0.85);
             --bg-card-hover: rgba(51, 65, 85, 0.9);
             --accent: #00c853;
@@ -30,356 +43,99 @@
             --text-muted: #6b7280;
             --border: #334155;
             --border-light: #475569;
-            --red: #ff3d3d;
-            --blue-accent: #2196f3;
             --whatsapp: #25d366;
-            --whatsapp-dark: #128c7e;
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
-            --radius-xl: 20px;
-            --font-main: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            --font-main: 'Segoe UI', 'Inter', sans-serif;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: var(--font-main);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
-
-        .top-bar {
-            background: rgba(17, 24, 39, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            padding: 6px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        }
-        .top-bar-inner {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
+        body { font-family: var(--font-main); background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; line-height: 1.6; }
+        
+        .top-bar { background: rgba(17, 24, 39, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
+        .top-bar-inner { max-width: 1300px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        
         .logo-section { display: flex; align-items: center; gap: 10px; }
-        .logo-icon {
-            width: 42px; height: 42px;
-            border-radius: var(--radius-sm);
-            background: linear-gradient(135deg, #00c853, #00e676);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 22px; font-weight: 900; color: #000;
-            box-shadow: 0 0 16px rgba(0,200,83,0.3);
-        }
-        .logo-text { font-size: 1.4rem; font-weight: 800; color: #fff; }
+        .logo-icon { width: 42px; height: 42px; border-radius: var(--radius-sm); background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 900; color: #000; }
+        .logo-text { font-size: 1.4rem; font-weight: 800; }
         .logo-text .zr { color: var(--accent-glow); }
         .logo-text .sports { color: var(--gold-light); }
 
-        .live-indicator {
-            display: flex; align-items: center; gap: 6px;
-            background: rgba(255,61,61,0.12);
-            border: 1px solid rgba(255,61,61,0.3);
-            border-radius: 20px; padding: 5px 12px;
-            font-size: 0.75rem; font-weight: 700; color: #ff6b6b;
+        .whatsapp-btn-top { 
+            display: flex; align-items: center; gap: 8px; background: var(--whatsapp); color: #fff; 
+            text-decoration: none; padding: 9px 16px; border-radius: 25px; font-weight: 700; font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(37,211,102,0.3); transition: 0.3s;
         }
-        .live-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: #ff3d3d; box-shadow: 0 0 10px #ff3d3d;
-            animation: dotPulse 1s infinite;
-        }
-        @keyframes dotPulse {
-            0%,100%{opacity:1;transform:scale(1);}
-            50%{opacity:0.4;transform:scale(1.6);}
-        }
-
-        .whatsapp-btn-top {
-            display: flex; align-items: center; gap: 8px;
-            background: var(--whatsapp); color: #fff; text-decoration: none;
-            padding: 9px 16px; border-radius: 25px;
-            font-weight: 700; font-size: 0.85rem; white-space: nowrap;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(37,211,102,0.35);
-        }
-        .whatsapp-btn-top:hover { background: #1ebe57; transform: translateY(-2px); }
-        .whatsapp-btn-top svg { width: 20px; height: 20px; }
+        .whatsapp-btn-top:hover { transform: translateY(-2px); }
 
         .main-container { max-width: 1300px; margin: 0 auto; padding: 20px; }
-        .hero-section { text-align: center; padding: 20px 0 10px; }
-        .hero-section h2 { font-size: 1.1rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
-        .hero-section .highlight { color: var(--accent-glow); font-weight: 700; }
+        .hero-section { text-align: center; padding: 20px 0; }
+        .highlight { color: var(--accent-glow); }
 
-        .league-tabs-wrapper {
-            position: sticky; top: 58px; z-index: 999;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border); margin-bottom: 16px;
+        .matches-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 16px; }
+        .match-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; }
+        
+        .floating-whatsapp { 
+            position: fixed; bottom: 28px; right: 28px; z-index: 9999; width: 60px; height: 60px; 
+            background: var(--whatsapp); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 25px rgba(37,211,102,0.5); cursor: pointer;
         }
-        .league-tabs {
-            max-width: 1300px; margin: 0 auto; padding: 0 20px;
-            display: flex; gap: 8px; overflow-x: auto;
-            scrollbar-width: none;
-        }
-        .league-tabs::-webkit-scrollbar { display: none; }
-        .league-tab {
-            padding: 9px 18px; border-radius: 25px;
-            border: 1.5px solid var(--border-light);
-            background: rgba(30, 41, 59, 0.7); color: var(--text-secondary);
-            cursor: pointer; font-size: 0.82rem; font-weight: 600;
-            white-space: nowrap; transition: all 0.3s ease;
-        }
-        .league-tab.active { background: linear-gradient(135deg, #00c853, #00e676); color: #000; border-color: transparent; font-weight: 700; }
-        .league-tab:hover { border-color: var(--accent); color: #fff; background: var(--bg-card-hover); }
-
-        .matches-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; }
-        @media (max-width: 850px) { .matches-grid { grid-template-columns: 1fr; } }
-
-        .match-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(4px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg); overflow: hidden;
-            transition: all 0.3s ease; position: relative;
-        }
-        .match-card:hover { border-color: var(--accent); transform: translateY(-2px); background: var(--bg-card-hover); }
-        .match-card-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 16px; background: rgba(0,0,0,0.25);
-            border-bottom: 1px solid var(--border); font-size: 0.75rem;
-            font-weight: 600; text-transform: uppercase; color: var(--text-muted);
-        }
-        .match-league { color: var(--gold); font-weight: 700; }
-        .status-badge {
-            padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 700;
-        }
-        .status-badge.live { background: rgba(255,61,61,0.18); color: #ff5252; }
-        .status-badge.upcoming { background: rgba(33,150,243,0.18); color: #64b5f6; }
-        .status-badge.completed { background: rgba(0,200,83,0.18); color: #69f0ae; }
-        .match-body { padding: 16px; }
-        .team-row {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.03);
-        }
-        .team-info { display: flex; align-items: center; gap: 10px; }
-        .team-flag {
-            width: 36px; height: 36px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem; font-weight: 700; color: #fff;
-        }
-        .team-flag.team-a { background: linear-gradient(135deg, #1a237e, #283593); }
-        .team-flag.team-b { background: linear-gradient(135deg, #b71c1c, #c62828); }
-        .team-flag.team-c { background: linear-gradient(135deg, #004d40, #00695c); }
-        .team-flag.team-d { background: linear-gradient(135deg, #e65100, #ef6c00); }
-        .team-name { font-weight: 700; font-size: 0.95rem; color: #fff; }
-        .team-score { font-weight: 700; font-size: 1.1rem; color: #fff; text-align: right; }
-        .team-score .overs { font-size: 0.7rem; font-weight: 500; color: var(--text-muted); display: block; }
-        .match-divider { text-align: center; padding: 4px 0; font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
-        .match-footer {
-            padding: 10px 16px; background: rgba(0,0,0,0.2);
-            border-top: 1px solid var(--border); display: flex;
-            justify-content: space-between; align-items: center;
-            font-size: 0.75rem; color: var(--text-muted);
-        }
-        .no-matches { text-align: center; padding: 60px 20px; color: var(--text-muted); }
-        .floating-whatsapp {
-            position: fixed; bottom: 28px; right: 28px; z-index: 9999;
-            width: 58px; height: 58px; background: var(--whatsapp);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 8px 28px rgba(37,211,102,0.45);
-            cursor: pointer; transition: all 0.3s ease;
-        }
-        .floating-whatsapp:hover { transform: scale(1.1); }
-        .floating-whatsapp svg { width: 30px; height: 30px; fill: #fff; }
-        .site-footer { text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.78rem; border-top: 1px solid var(--border); margin-top: 32px; }
-        .notice-box {
-            background: rgba(255,171,0,0.1); border: 1px solid rgba(255,171,0,0.3);
-            border-radius: 12px; padding: 12px 18px; margin: 12px auto 20px;
-            max-width: 800px; text-align: center; font-size: 0.8rem; color: var(--gold-light);
-        }
+        .floating-whatsapp svg { width: 32px; height: 32px; fill: white; }
     </style>
 </head>
 <body>
+
     <header class="top-bar">
         <div class="top-bar-inner">
             <div class="logo-section">
                 <div class="logo-icon">ZR</div>
                 <span class="logo-text"><span class="zr">ZR</span><span class="sports">SPORTS</span></span>
             </div>
-            <div class="live-indicator"><span class="live-dot"></span> LIVE SCORES</div>
-            <a href="https://wa.me/919039543905?text=Hi%20ZRSPORTS%20-%20I%20need%20cricket%20updates!" target="_blank" class="whatsapp-btn-top">
-                <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-                Chat on WhatsApp
+            <a href="https://wa.me/919039543905?text=Hi%20ZRSPORTS%20-%20I%20need%20cricket%20updates!" 
+               onclick="return gtag_report_conversion('https://wa.me/919039543905?text=Hi%20ZRSPORTS%20-%20I%20need%20cricket%20updates!');" 
+               target="_blank" class="whatsapp-btn-top">
+               Chat on WhatsApp
             </a>
         </div>
     </header>
 
-    <div class="league-tabs-wrapper">
-        <div class="league-tabs" id="leagueTabs">
-            <button class="league-tab active" data-league="all">🌍 All</button>
-            <button class="league-tab" data-league="ipl">💎 IPL</button>
-            <button class="league-tab" data-league="international">🏆 International</button>
-            <button class="league-tab" data-league="bbl">🔥 BBL</button>
-            <button class="league-tab" data-league="psl">⭐ PSL</button>
-            <button class="league-tab" data-league="cpl">🌴 CPL</button>
-            <button class="league-tab" data-league="t20wc">👑 T20 WC</button>
-            <button class="league-tab" data-league="ashes">🏴 Ashes</button>
-            <button class="league-tab" data-league="sa20">🇿🇦 SA20</button>
-            <button class="league-tab" data-league="lpl">🇱🇰 LPL</button>
-            <button class="league-tab" data-league="bpl">🇧🇩 BPL</button>
-        </div>
-    </div>
-
     <main class="main-container">
         <div class="hero-section">
-            <h2>🏏 <span class="highlight">Live Cricket</span> — Real-Time API Powered</h2>
+            <h2>🏏 <span class="highlight">Live Cricket</span> — Real-Time Updates</h2>
         </div>
-        <div class="notice-box" id="dataSourceNote">
-            🔄 लोड हो रहा है डेटा... (API से रीयल-टाइम स्कोर)
-        </div>
-        <div class="matches-grid" id="matchesGrid"></div>
+        <div id="matchesGrid" class="matches-grid">
+            </div>
     </main>
 
-    <footer class="site-footer">
-        <p>© 2026 <strong>ZRSPORTS</strong> — All Rights Reserved. | Data from CricAPI</p>
-    </footer>
-
-    <a href="https://wa.me/919039543905?text=Hi%20ZRSPORTS%20-%20I%20need%20cricket%20updates!" target="_blank" class="floating-whatsapp">
-        <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+    <a href="https://wa.me/919039543905?text=Hi%20ZRSPORTS%20-%20I%20need%20cricket%20updates!" 
+       onclick="return gtag_report_conversion('https://wa.me/919039543905?text=Hi%20ZRSPORTS%20-%20I%20need%20cricket%20updates!');" 
+       target="_blank" class="floating-whatsapp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
     </a>
 
     <script>
-        (function() {
+        // API loading logic
+        async function loadScores() {
             const API_KEY = '8e37d7c2-4b7d-450e-ba82-28fd7f461d4d';
             const API_URL = `https://api.cricapi.com/v1/currentMatches?apikey=${API_KEY}&offset=0`;
-
-            const fallbackMatches = [
-                { id:1, league:'ipl', leagueName:'IPL Match 51', teamA:'Delhi Capitals', teamB:'Kolkata Knight Riders', scoreA:'', oversA:'', scoreB:'', oversB:'', status:'upcoming', venue:'Arun Jaitley Stadium, Delhi', time:'Today 7:30 PM IST' },
-                { id:2, league:'ipl', leagueName:'IPL Match 50 (RESULT)', teamA:'Lucknow Super Giants', teamB:'Royal Challengers Bengaluru', scoreA:'209/3', oversA:'20 ov', scoreB:'203/6', oversB:'19 ov', status:'completed', venue:'Ekana Stadium, Lucknow', time:'LSG won by 9 runs' },
-                { id:3, league:'international', leagueName:'WTC Final', teamA:'India', teamB:'Australia', scoreA:'328/4', oversA:'89.2 ov', scoreB:'156/3', oversB:'52.1 ov', status:'live', venue:'Sydney Cricket Ground', time:'Day 3' }
-            ];
-
-            function getFlagClass(name) {
-                const map = { 'India':'team-a','Australia':'team-b','England':'team-c','Pakistan':'team-d','South Africa':'team-e' };
-                return map[name] || 'team-f';
-            }
-
-            function renderMatches(matches) {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
                 const grid = document.getElementById('matchesGrid');
-                if (!matches || matches.length === 0) {
-                    grid.innerHTML = '<div class="no-matches">🏟️ कोई मैच नहीं मिला।</div>';
-                    return;
-                }
                 let html = '';
-                matches.forEach(m => {
-                    let statusClass = m.status === 'live' ? 'live' : (m.status === 'upcoming' ? 'upcoming' : 'completed');
-                    let statusText = m.status.toUpperCase();
-                    let teamAScoreHtml = m.scoreA ? `<span class="score-highlight">${m.scoreA}</span> <span class="overs">${m.oversA}</span>` : '<span style="color:#aaa;">Yet to bat</span>';
-                    let teamBScoreHtml = m.scoreB ? `<span class="score-highlight">${m.scoreB}</span> <span class="overs">${m.oversB}</span>` : '<span style="color:#aaa;">Yet to bat</span>';
-                    html += `
-                    <div class="match-card ${m.status==='live'?'live-match':''}">
-                        <div class="match-card-header">
-                            <span class="match-league">${m.leagueName}</span>
-                            <span class="status-badge ${statusClass}">${statusText}</span>
-                        </div>
-                        <div class="match-body">
-                            <div class="team-row">
-                                <div class="team-info">
-                                    <div class="team-flag ${getFlagClass(m.teamA)}">${m.teamA.charAt(0)}</div>
-                                    <span class="team-name">${m.teamA}</span>
-                                </div>
-                                <div class="team-score">${teamAScoreHtml}</div>
-                            </div>
-                            <div class="match-divider">VS</div>
-                            <div class="team-row">
-                                <div class="team-info">
-                                    <div class="team-flag ${getFlagClass(m.teamB)}">${m.teamB.charAt(0)}</div>
-                                    <span class="team-name">${m.teamB}</span>
-                                </div>
-                                <div class="team-score">${teamBScoreHtml}</div>
-                            </div>
-                        </div>
-                        <div class="match-footer">
-                            <span>📍 ${m.venue}</span>
-                            <span>⏱ ${m.time || m.status}</span>
-                        </div>
-                    </div>`;
-                });
-                grid.innerHTML = html;
-            }
-
-            function parseApiData(apiResponse) {
-                if (!apiResponse || !apiResponse.data || !Array.isArray(apiResponse.data)) return null;
-                return apiResponse.data.map(match => {
-                    let teamA = match.teams ? match.teams[0] : 'Team A';
-                    let teamB = match.teams ? match.teams[1] : 'Team B';
-                    let scoreA = '', oversA = '', scoreB = '', oversB = '';
-                    if (match.score && Array.isArray(match.score)) {
-                        if (match.score[0]) { scoreA = match.score[0].r + '/' + match.score[0].w; oversA = match.score[0].o + ' ov'; }
-                        if (match.score[1]) { scoreB = match.score[1].r + '/' + match.score[1].w; oversB = match.score[1].o + ' ov'; }
-                    }
-                    let status = match.matchStarted ? (match.matchEnded ? 'completed' : 'live') : 'upcoming';
-                    let time = match.dateTimeGMT ? new Date(match.dateTimeGMT).toLocaleString() : '';
-                    return {
-                        id: match.id,
-                        league: match.series_id || 'international',
-                        leagueName: match.name || 'Match',
-                        teamA: teamA,
-                        teamB: teamB,
-                        scoreA: scoreA,
-                        oversA: oversA,
-                        scoreB: scoreB,
-                        oversB: oversB,
-                        status: status,
-                        venue: match.venue || '',
-                        time: time
-                    };
-                });
-            }
-
-            async function loadScores() {
-                const note = document.getElementById('dataSourceNote');
-                try {
-                    note.innerHTML = '🔄 API से रीयल-टाइम डेटा लोड हो रहा है...';
-                    const response = await fetch(API_URL);
-                    if (!response.ok) throw new Error('API response error');
-                    const data = await response.json();
-                    const apiMatches = parseApiData(data);
-                    if (apiMatches && apiMatches.length > 0) {
-                        renderMatches(apiMatches);
-                        note.innerHTML = '✅ <strong>लाइव डेटा CricAPI से</strong> (रीयल-टाइम)';
-                    } else {
-                        throw new Error('API returned empty');
-                    }
-                } catch (error) {
-                    console.warn('API विफल, फ़ॉलबैक डेटा दिखा रहे हैं:', error);
-                    renderMatches(fallbackMatches);
-                    note.innerHTML = '⚠️ API अनुपलब्ध, सटीक पिछला डेटा दिखाया जा रहा है।';
+                if(data.data) {
+                    data.data.slice(0, 6).forEach(m => {
+                        html += `<div class="match-card">
+                            <h3>${m.name}</h3>
+                            <p>${m.status}</p>
+                            <p style="font-size:0.8rem; color:#aaa;">📍 ${m.venue}</p>
+                        </div>`;
+                    });
+                    grid.innerHTML = html;
                 }
-            }
-
-            document.getElementById('leagueTabs').addEventListener('click', function(e) {
-                if (e.target.classList.contains('league-tab')) {
-                    document.querySelectorAll('.league-tab').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    loadScores();
-                }
-            });
-
-            loadScores();
-            setInterval(loadScores, 30000);
-        })();
+            } catch (e) { console.error("API Error", e); }
+        }
+        loadScores();
     </script>
 </body>
 </html>
